@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School LMS - Programming Lessons</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #3b82f6;
+            --primary-light: #dbeafe;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --sidebar-bg: #1e40af;
+            --button-bg: #3b82f6;
+            --button-hover: #2563eb;
+            --accent-color: #60a5fa;
+            --card-bg: #ffffff;
+            --border-radius: 4px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --transition: all 0.2s ease;
+        }
+
+
+        .dark-mode {
+            --bg-color: #0f172a;
+            --text-color: #e2e8f0;
+            --sidebar-bg: #1e3a8a;
+            --button-bg: #3b82f6;
+            --button-hover: #2563eb;
+            --accent-color: #60a5fa;
+            --card-bg: #1e293b;
+            --shadow: 0 1px 3px rgba(0,0,0,0.25);
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            line-height: 1.5;
+            transition: var(--transition);
+        }
+
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+
+        .sidebar-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-left: 10px;
+        }
+
+
+        .sidebar-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+
+        .sidebar a i {
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 32px;
+            flex-grow: 1;
+            transition: var(--transition);
+        }
+
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid #e2e8f0;
+        }
+
+
+        .user-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 16px;
+
+
+        }
+
+
+        .user-info-item {
+            margin-bottom: 12px;
+
+
+            color: blue;
+        }
+
+
+        .user-info-item strong {
+            display: block;
+            font-size: 20px;
+            color: var(--primary-blue);
+            margin-bottom: 4px;
+        }
+
+
+        .user-info-value {
+            font-size: 18px;
+            padding: 6px 10px;
+            background: var(--primary-light);
+            border-radius: var(--border-radius);
+        }
+
+
+        /* Lesson cards */
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+
+        .lesson-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid #e2e8f0;
+        }
+
+
+        .lesson-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 12px 16px;
+        }
+
+
+        .lesson-header h2 {
+            font-size: 16px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+
+        .lesson-content {
+            padding: 16px;
+        }
+
+
+        .lesson-content p {
+            margin-bottom: 16px;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+
+        .lesson-content a {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--button-bg);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-size: 14px;
+        }
+
+
+        .lesson-content a:hover {
+            background: var(--button-hover);
+        }
+
+
+        .hidden {
+            display: none;
+        }
+
+
+        /* Settings styles */
+        .settings-section {
+            margin-bottom: 32px;
+        }
+
+
+        .settings-header {
+            font-size: 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+
+        .settings-header i {
+            margin-right: 8px;
+            color: var(--primary-blue);
+        }
+
+
+        #editProfileForm {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            margin-top: 6px;
+            font-size: 14px;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+
+        button {
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+
+        button:hover {
+            background: var(--button-hover);
+        }
+
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: var(--card-bg);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            margin-top: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e2e8f0;
+        }
+
+
+        .toggle-switch {
+            width: 40px;
+            height: 20px;
+            background: #cbd5e1;
+            border-radius: 20px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+
+        .toggle-circle {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+
+        .dark-mode .toggle-switch {
+            background: var(--accent-color);
+        }
+
+
+        .dark-mode .toggle-circle {
+            transform: translateX(20px);
+        }
+
+
+        /* Delete Account Button */
+        .delete-account-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 12px;
+        }
+
+
+        .delete-account-btn:hover {
+            background: #dc2626;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+                padding: 16px 8px;
+            }
+           
+            .sidebar-header h2, .sidebar a span {
+                display: none;
+            }
+           
+            .sidebar a {
+                justify-content: center;
+                padding: 12px 0;
+            }
+           
+            .sidebar a i {
+                margin-right: 0;
+                font-size: 18px;
+            }
+           
+            .main-content {
+                margin-left: 60px;
+                padding: 16px;
+            }
+           
+            .user-info {
+                grid-template-columns: 1fr;
+            }
+           
+            .lesson-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body onload="loadUserInfo()">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-school"></i>
+            <h2>School LMS</h2>
+        </div>
+        <div class="sidebar-links">
+            <a href="#" onclick="showSection('dashboard')">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" onclick="showSection('programming-lessons')">
+                <i class="fas fa-laptop-code"></i>
+                <span>Lessons</span>
+            </a>
+            <a href="#" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="#" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+
+    <!-- Dashboard -->
+    <div class="main-content" id="dashboard">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="card">
+            <h2>Welcome to School LMS</h2>
+            <p>Your learning management system for programming skills.</p>
+           
+            <div class="user-info">
+                <div class="user-info-item">
+                    <strong>Name</strong>
+                    <div class="user-info-value" id="userName">Loading...</div>
+                </div>
+                <div class="user-info-item">
+                    <strong>Email</strong>
+                    <div class="user-info-value" id="userEmail">Loading...</div>
+                </div>
+                <div class="user-info-item">
+                    <strong>Role</strong>
+                    <div class="user-info-value" id="userRole">Loading...</div>
+                </div>
+                <div class="user-info-item">
+                    <strong>Student ID</strong>
+                    <div class="user-info-value" id="userId">Loading...</div>
+                </div>
+                <div class="user-info-item">
+                    <strong>Last Login</strong>
+                    <div class="user-info-value" id="userLastLogin">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Programming Lessons -->
+    <div class="main-content hidden" id="programming-lessons">
+        <h1 class="page-title">Programming Lessons</h1>
+       
+        <div class="card">
+            <p>Explore programming concepts through our curated collection of lessons.</p>
+        </div>
+       
+        <div class="lesson-grid">
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <h2>1. Introduction to HTML</h2>
+                </div>
+                <div class="lesson-content">
+                    <p>Learn the basics of HTML, the language used to create web pages. This lesson covers tags, attributes, and document structure.</p>
+                    <a href="https://www.slideshare.net/slideshow/introduction-to-html-9088114/9088114" target="_blank">Open Lesson</a>
+                </div>
+            </div>
+           
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <h2>2. Introduction to CSS</h2>
+                </div>
+                <div class="lesson-content">
+                    <p>Understand how CSS styles web pages and enhances user experience. Learn selectors, properties, and responsive design principles.</p>
+                    <a href="https://www.slideshare.net/webdevninja/introduction-to-css-13603389" target="_blank">Open Lesson</a>
+                </div>
+            </div>
+           
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <h2>3. JavaScript Fundamentals</h2>
+                </div>
+                <div class="lesson-content">
+                    <p>Discover the power of JavaScript for making web pages interactive. Cover variables, functions, DOM manipulation, and events.</p>
+                    <a href="https://www.slideshare.net/slideshow/introduction-to-javascript-50362787/50362787" target="_blank">Open Lesson</a>
+                </div>
+            </div>
+           
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <h2>4. Python for Beginners</h2>
+                </div>
+                <div class="lesson-content">
+                    <p>Start learning Python, a versatile programming language for web and software development. Explore syntax, data types, and control structures.</p>
+                <a href="https://www.slideshare.net/slideshow/introduction-to-python-36647807/36647807" target="_blank">Open Lesson</a>
+                </div>
+            </div>
+           
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <h2>5. Git & Version Control</h2>
+                </div>
+                <div class="lesson-content">
+                    <p>Learn Git to manage and track changes in your projects efficiently. Master repositories, branching, merging, and collaboration.</p>
+                    <a href="https://realpython.com/python-git-github-intro/" target="_blank">Open Lesson</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Settings -->
+    <div class="main-content hidden" id="settings">
+        <h1 class="page-title">Settings</h1>
+       
+        <div class="card">
+            <div class="settings-section">
+                <h3 class="settings-header" onclick="toggleEditProfile()">
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                </h3>
+                <form id="editProfileForm" class="hidden">
+                    <label for="editName">Name:</label>
+                    <input type="text" id="editName" required>
+                    <br><br>
+                    <button type="button" onclick="updateProfile()">Save Changes</button>
+                </form>
+            </div>
+           
+            <div class="settings-section">
+                <h3 class="settings-header">
+                    <i class="fas fa-moon"></i> Appearance
+                </h3>
+                <div class="dark-mode-toggle" onclick="toggleDarkMode()">
+                    <span>Dark Mode</span>
+                    <div class="toggle-switch">
+                        <div class="toggle-circle"></div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="settings-section">
+                <h3 class="settings-header">
+                    <i class="fas fa-trash-alt"></i> Account Management
+                </h3>
+                <button class="delete-account-btn" onclick="deleteAccount()">Delete My Account</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function loadUserInfo() {
+            const user = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!user) {
+                alert("No user found. Redirecting to login...");
+                window.location.href = "login.html";
+                return;
+            }
+
+
+            document.getElementById("userName").textContent = user.name || "N/A";
+            document.getElementById("userEmail").textContent = user.email || "N/A";
+            document.getElementById("userRole").textContent = user.role || "N/A";
+            document.getElementById("userId").textContent = user.id || "N/A";
+            document.getElementById("userLastLogin").textContent = user.lastLogin || "N/A";
+
+
+            // Populate edit profile fields
+            document.getElementById("editName").value = user.name || "";
+        }
+
+
+        function toggleEditProfile() {
+            const form = document.getElementById("editProfileForm");
+            form.classList.toggle("hidden");
+        }
+
+
+        function updateProfile() {
+            const newName = document.getElementById("editName").value.trim();
+
+
+            if (newName === "") {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+
+            let user = JSON.parse(localStorage.getItem("loggedInUser"));
+            user.name = newName;
+
+
+            localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+
+            document.getElementById("userName").textContent = newName;
+
+
+            alert("Profile updated successfully!");
+            toggleEditProfile(); // Hide the form after successful update
+        }
+
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.main-content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            // Optionally save the dark mode preference to localStorage
+            const isDarkMode = document.body.classList.contains("dark-mode");
+            localStorage.setItem("darkMode", isDarkMode);
+        }
+
+
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            alert("Logged out successfully!");
+            window.location.href = "login.html";
+        }
+
+
+        function deleteAccount() {
+            if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+                localStorage.removeItem("loggedInUser");
+                alert("Account deleted successfully.");
+                window.location.href = "login.html";
+            }
+        }
+
+
+        // Check if dark mode preference exists and apply it on page load
+        document.addEventListener("DOMContentLoaded", function() {
+            const isDarkMode = localStorage.getItem("darkMode") === "true";
+            if (isDarkMode) {
+                document.body.classList.add("dark-mode");
+            }
+        });
+    </script>
+</body>
+</html>
+

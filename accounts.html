@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts Library - School LMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #3b82f6;
+            --primary-dark: #1e40af;
+            --primary-light: #dbeafe;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --success-color: #22c55e;
+            --card-bg: #ffffff;
+            --border-radius: 4px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --transition: all 0.2s ease;
+        }
+       
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+       
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+       
+        header {
+            background-color: var(--primary-dark);
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+       
+        h1 {
+            margin: 0;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+       
+        .page-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+       
+        .page-title h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+       
+        .table-container {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+        }
+       
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+       
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+       
+        th {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            font-size: 14px;
+        }
+       
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+       
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+       
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+       
+        .btn-danger:hover {
+            background-color: var(--danger-hover);
+        }
+       
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+       
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+       
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+       
+        .password-cell {
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+       
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-left: 8px;
+            background-color: var(--primary-blue);
+            color: white;
+        }
+       
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+       
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            background-color: white;
+            color: var(--text-color);
+        }
+       
+        .search-input::placeholder {
+            color: #94a3b8;
+        }
+       
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+       
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+       
+        .status-active {
+            background-color: var(--success-color);
+        }
+       
+        .status-inactive {
+            background-color: var(--danger-color);
+        }
+       
+        footer {
+            margin-top: auto;
+            padding: 16px;
+            text-align: center;
+            background-color: #f1f5f9;
+            font-size: 0.85rem;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+        }
+       
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+           
+            th, td {
+                padding: 8px 10px;
+            }
+           
+            .hide-mobile {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-school"></i> School LMS</h1>
+        </div>
+    </header>
+   
+    <div class="container">
+        <div class="page-title">
+            <h2>Accounts Library</h2>
+            <button class="btn btn-primary" onclick="goBack()">Back to Dashboard</button>
+        </div>
+       
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by name or email...">
+        </div>
+       
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th class="hide-mobile">Status</th>
+                        <th class="hide-mobile">Registered At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="accountsTableBody"></tbody>
+            </table>
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <p>No accounts found.</p>
+            </div>
+        </div>
+    </div>
+   
+    <footer>
+        <div class="container">
+            <p>School LMS &copy; 2025 | Admin Dashboard</p>
+        </div>
+    </footer>
+   
+    <script>
+        function loadAccounts() {
+            const accountsLibrary = JSON.parse(localStorage.getItem("accountsLibrary")) || [];
+            const tableBody = document.getElementById("accountsTableBody");
+            const emptyState = document.getElementById("emptyState");
+           
+            tableBody.innerHTML = "";
+           
+            if (accountsLibrary.length === 0) {
+                emptyState.style.display = "block";
+                return;
+            }
+           
+            emptyState.style.display = "none";
+           
+            accountsLibrary.forEach((account, index) => {
+                // Format the date
+                const registeredDate = new Date(account.registeredAt);
+                const formattedDate = new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }).format(registeredDate);
+               
+                // Create status indicator
+                const isActive = account.status !== "inactive";
+                const statusClass = isActive ? "status-active" : "status-inactive";
+                const statusText = isActive ? "Active" : "Inactive";
+               
+                // Create row
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${account.name}${account.isAdmin ? '<span class="badge">Admin</span>' : ''}</td>
+                    <td>${account.email}</td>
+                    <td class="hide-mobile"><span class="status-dot ${statusClass}"></span>${statusText}</td>
+                    <td class="hide-mobile">${formattedDate}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="confirmDelete(${index})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+       
+        function confirmDelete(index) {
+            const accountsLibrary = JSON.parse(localStorage.getItem("accountsLibrary")) || [];
+            const accountToDelete = accountsLibrary[index];
+           
+            if (confirm(`Are you sure you want to delete the account for ${accountToDelete.name}?`)) {
+                deleteAccount(index);
+            }
+        }
+       
+        function deleteAccount(index) {
+            let accountsLibrary = JSON.parse(localStorage.getItem("accountsLibrary")) || [];
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+           
+            const accountToDelete = accountsLibrary[index];
+           
+            // Remove from accountsLibrary
+            accountsLibrary.splice(index, 1);
+            localStorage.setItem("accountsLibrary", JSON.stringify(accountsLibrary));
+           
+            // Remove from users list
+            users = users.filter(user => user.email !== accountToDelete.email);
+            localStorage.setItem("users", JSON.stringify(users));
+           
+            // Show success message
+            const successMessage = document.createElement("div");
+            successMessage.style.position = "fixed";
+            successMessage.style.top = "20px";
+            successMessage.style.left = "50%";
+            successMessage.style.transform = "translateX(-50%)";
+            successMessage.style.backgroundColor = "var(--success-color)";
+            successMessage.style.color = "white";
+            successMessage.style.padding = "10px 20px";
+            successMessage.style.borderRadius = "4px";
+            successMessage.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.2)";
+            successMessage.style.zIndex = "1000";
+            successMessage.textContent = `Account for ${accountToDelete.name} deleted successfully.`;
+           
+            document.body.appendChild(successMessage);
+           
+            setTimeout(() => {
+                successMessage.remove();
+            }, 3000);
+           
+            loadAccounts();
+        }
+       
+        function goBack() {
+            window.location.href = "dashboard.html";
+        }
+       
+        function setupSearch() {
+            const searchInput = document.getElementById("searchInput");
+            searchInput.addEventListener("input", function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll("#accountsTableBody tr");
+               
+                rows.forEach(row => {
+                    const name = row.cells[0].textContent.toLowerCase();
+                    const email = row.cells[1].textContent.toLowerCase();
+                   
+                    if (name.includes(searchTerm) || email.includes(searchTerm)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        }
+       
+        document.addEventListener("DOMContentLoaded", function() {
+            loadAccounts();
+            setupSearch();
+        });
+    </script>
+</body>
+</html>
